@@ -10,20 +10,32 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
 
-    let emojis: [String] = [ "👻", "🎃", "🕷️","😈", "😈", "👻", "🎃", "🕷️","😈", "🏩", "🧨", "🍭"]
-
     var body: some View {
         VStack {
+            VStack {
+                Text(String(format: "Score: %d", viewModel.score))
+                Text("Theme: \(viewModel.currentTheme.name)")
+            }
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
             }
-            Button("Shuffle") {
-                viewModel.shuffle()
+            HStack {
+                Button("Shuffle") {
+                    viewModel.shuffle()
+                }
+                Spacer()
+                Button("New Game") {
+                    viewModel.startNewGame()
+                }
+            }
+            .task {
+                viewModel.startNewGame()
             }
         }
         .padding()
     }
+
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)]) {
             ForEach(viewModel.cards) { card in
@@ -38,7 +50,7 @@ struct EmojiMemoryGameView: View {
                 }
             }
         }
-        .foregroundColor(.orange)
+        .foregroundColor(viewModel.getColor())
     }
 }
 

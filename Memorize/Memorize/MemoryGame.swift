@@ -12,6 +12,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
 
     private(set) var cards: Array<Card>
 
+    var matchedPairs: Int? {
+        cards.count(where: { (card: Card) -> Bool in
+            card.isMatched
+        }) / 2
+    }
+
+    var unmatchedPairs: Int = 0
+
     init(pairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
         cards = []
         // add pairsOfCards x 2 cards
@@ -39,6 +47,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
+                    } else {
+                        unmatchedPairs += 1
                     }
                 } else {
                     indexOfTheOneAndOnlyFaceUpCard = chosenIndex
@@ -60,7 +70,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
 
     mutating func shuffle() {
         cards.shuffle()
-        print(cards)
     }
 
     struct Card : Equatable, Identifiable, CustomDebugStringConvertible {
