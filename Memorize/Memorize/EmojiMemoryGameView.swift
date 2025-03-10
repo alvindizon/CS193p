@@ -12,33 +12,33 @@ struct EmojiMemoryGameView: View {
 
     let emojis: [String] = [ "👻", "🎃", "🕷️","😈", "😈", "👻", "🎃", "🕷️","😈", "🏩", "🧨", "🍭"]
 
+    let aspectRatio: CGFloat = 2/3
+
     var body: some View {
         VStack {
-            ScrollView {
-                cards
-                    .animation(.default, value: viewModel.cards)
-            }
+            cards
+                .animation(.default, value: viewModel.cards)
             Button("Shuffle") {
                 viewModel.shuffle()
             }
         }
         .padding()
     }
-    var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)]) {
-            ForEach(viewModel.cards) { card in
-                VStack(spacing: 0) {
-                    CardView(card)
-                        .aspectRatio(2/3, contentMode: .fit)
-                        .padding(4)
-                        .onTapGesture {
-                            viewModel.choose(card)
-                        }
-                    Text(card.id)
-                }
+
+
+    private var cards: some View {
+        AspectVGrid(viewModel.cards, aspectRatio: aspectRatio) { card in
+            VStack {
+                CardView(card)
+                    .aspectRatio(aspectRatio, contentMode: .fit)
+                    .padding(4)
+                    .onTapGesture {
+                        viewModel.choose(card)
+                    }
+                Text(card.id)
             }
         }
-        .foregroundColor(.orange)
+        .foregroundColor(Color.orange)
     }
 }
 

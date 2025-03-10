@@ -16,7 +16,7 @@ class EmojiMemoryGame: ObservableObject {
     @Published private var model = createMemoryGame()
     // this is a type function
     private static func createMemoryGame() -> MemoryGame<String> {
-        return MemoryGame(pairsOfCards: 16) { index in
+        return MemoryGame(pairsOfCards: 5) { index in
             if emojis.indices.contains(index) {
                 // the real name is EmojiMemoryGame.emojis
                 return emojis[index]
