@@ -16,7 +16,7 @@ class EmojiMemoryGame: ObservableObject {
     @Published private var model = createMemoryGame()
     // this is a type function
     private static func createMemoryGame() -> MemoryGame<String> {
-        return MemoryGame(pairsOfCards: 5) { index in
+        return MemoryGame(pairsOfCards: 2) { index in
             if emojis.indices.contains(index) {
                 // the real name is EmojiMemoryGame.emojis
                 return emojis[index]
@@ -27,7 +27,11 @@ class EmojiMemoryGame: ObservableObject {
     }
 
     var cards: Array<MemoryGame<String>.Card> {
-        return model.cards
+        model.cards
+    }
+
+    var color: Color {
+        .orange
     }
 
     // MARK: - Intents
